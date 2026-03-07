@@ -230,8 +230,13 @@ em {
 	text-decoration: none;
 }
 
-.nav-links a:hover::after {
+.nav-links a:hover::after,
+.nav-links a.active::after {
 	width: 100%;
+}
+
+.nav-links a.active {
+	color: var(--ink);
 }
 
 .nav-toggle {
@@ -299,15 +304,18 @@ em {
 
 .section-mark {
 	position: absolute;
-	top: 28px;
-	right: 28px;
+	top: 10px;
+	right: 18px;
 	font-family: var(--font-type);
-	font-size: 5rem;
-	color: transparent;
-	-webkit-text-stroke: 1px rgba(180, 150, 90, .2);
-	letter-spacing: -.02em;
+	font-size: clamp(3.5rem, 7vw, 6rem);
+	line-height: 1;
+	color: rgba(139, 90, 43, 0.14);
+	filter: blur(1.4px) contrast(0.8);
+	mix-blend-mode: multiply;
+	letter-spacing: -.05em;
 	pointer-events: none;
 	user-select: none;
+	-webkit-user-select: none;
 }
 
 .section-title {
@@ -546,6 +554,16 @@ em {
 	letter-spacing: .2em;
 	color: var(--ink-faded);
 	text-transform: uppercase;
+}
+
+.hero-visitor {
+	margin-top: 10px;
+	font-family: var(--font-mono);
+	font-size: .72rem;
+	letter-spacing: .08em;
+	color: rgba(122, 99, 71, 0.45);
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 .hero-scroll-hint {
@@ -1582,12 +1600,7 @@ em {
 	outline: none;
 	color: #c8d0b0;
 	font-family: var(--mono);
-	font-size: .8rem;
-	caret-color: #c8d0b0;
-}
-
-.term-input-field::placeholder {
-	color: rgba(200, 208, 176, .35);
+	font-size: 16px;
 }
 
 /* ─────────────────────────────────────────
@@ -1805,4 +1818,11 @@ em {
 .konami-close:hover {
 	border-color: var(--ink-faded);
 	color: var(--red-ribbon);
+}
+
+/* ── Cursor personalizado (apenas desktop/mouse) ── */
+@media (pointer: fine) {
+	* {
+		cursor: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='14'%20height='20'%20viewBox='0%200%2014%2020'%3E%3Cpath%20d='M2%200%20L2%2016.5%20L5.5%2012.5%20L8.5%2019%20L11%2018%20L8%2011.5%20L13.5%2011.5%20Z'%20fill='%231a1108'/%3E%3C/svg%3E") 2 0, auto !important;
+	}
 }
