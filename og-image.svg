@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <pattern id="lines" x="0" y="0" width="1200" height="26" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="25" x2="1200" y2="25" stroke="#c4aa7e" stroke-width="0.6" opacity="0.35"/>
+    </pattern>
+  </defs>
+
+  <!-- paper background -->
+  <rect width="1200" height="630" fill="#f4edd8"/>
+
+  <!-- aged corners -->
+  <radialGradient id="age-tl" cx="0" cy="0" r="500" gradientUnits="userSpaceOnUse">
+    <stop offset="0%" stop-color="#c4aa7e" stop-opacity="0.18"/>
+    <stop offset="100%" stop-color="#c4aa7e" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="age-br" cx="1200" cy="630" r="500" gradientUnits="userSpaceOnUse">
+    <stop offset="0%" stop-color="#c4aa7e" stop-opacity="0.18"/>
+    <stop offset="100%" stop-color="#c4aa7e" stop-opacity="0"/>
+  </radialGradient>
+  <rect width="1200" height="630" fill="url(#age-tl)"/>
+  <rect width="1200" height="630" fill="url(#age-br)"/>
+
+  <!-- ruled lines -->
+  <rect width="1200" height="630" fill="url(#lines)"/>
+
+  <!-- left red margin line -->
+  <line x1="88" y1="0" x2="88" y2="630" stroke="#8c1c13" stroke-width="1.2" opacity="0.35"/>
+
+  <!-- domain stamp top-right -->
+  <text x="1130" y="62" font-family="Courier New, monospace" font-size="15" fill="#1a1108" opacity="0.35" text-anchor="end" letter-spacing="3">H6N.COM.BR</text>
+  <line x1="960" y1="68" x2="1130" y2="68" stroke="#c4aa7e" stroke-width="0.8" opacity="0.5"/>
+
+  <!-- main name -->
+  <text x="108" y="240" font-family="Georgia, serif" font-size="82" font-weight="bold" fill="#1a1108" letter-spacing="-1" opacity="0.92">Hamilton</text>
+  <text x="108" y="328" font-family="Georgia, serif" font-size="82" font-weight="bold" fill="#1a1108" letter-spacing="-1" opacity="0.92">Tumenas Borges</text>
+
+  <!-- divider -->
+  <line x1="108" y1="360" x2="700" y2="360" stroke="#1a1108" stroke-width="1" opacity="0.25"/>
+
+  <!-- roles -->
+  <text x="108" y="406" font-family="Courier New, monospace" font-size="22" fill="#1a1108" opacity="0.65" letter-spacing="3">GASTRÔNOMO · ADVOGADO · DESENVOLVEDOR</text>
+
+  <!-- stack hint -->
+  <text x="108" y="464" font-family="Courier New, monospace" font-size="17" fill="#1a1108" opacity="0.45" letter-spacing="2">Ruby on Rails · PostgreSQL · Hotwire · OpenAI</text>
+
+  <!-- location -->
+  <text x="108" y="556" font-family="Courier New, monospace" font-size="15" fill="#1a1108" opacity="0.4" letter-spacing="2">São João da Boa Vista — SP — Brasil</text>
+
+  <!-- decorative stamp -->
+  <rect x="960" y="380" width="160" height="160" rx="4" fill="none" stroke="#8c1c13" stroke-width="2" opacity="0.3"/>
+  <text x="1040" y="440" font-family="Courier New, monospace" font-size="11" fill="#8c1c13" opacity="0.5" text-anchor="middle" letter-spacing="2">DEV</text>
+  <text x="1040" y="458" font-family="Courier New, monospace" font-size="11" fill="#8c1c13" opacity="0.5" text-anchor="middle" letter-spacing="2">RAILS</text>
+  <text x="1040" y="490" font-family="Georgia, serif" font-size="34" fill="#8c1c13" opacity="0.35" text-anchor="middle">h6n</text>
+  <text x="1040" y="520" font-family="Courier New, monospace" font-size="10" fill="#8c1c13" opacity="0.4" text-anchor="middle" letter-spacing="1">2026</text>
+</svg>
