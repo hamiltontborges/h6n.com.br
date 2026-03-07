@@ -1423,3 +1423,171 @@ em {
 	background: rgba(140, 100, 40, .25);
 	color: var(--ink);
 }
+/* ─────────────────────────────────────────
+   PRELOADER
+───────────────────────────────────────── */
+#preloader {
+        position: fixed;
+        inset: 0;
+        background: var(--paper-bg, #f0e8d0);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        transition: opacity .5s ease, visibility .5s ease;
+}
+
+#preloader.hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+}
+
+.pl-text {
+        font-family: var(--mono);
+        font-size: clamp(1.6rem, 4vw, 2.4rem);
+        color: var(--ink, #1a1108);
+        letter-spacing: .05em;
+}
+
+.pl-cursor {
+        font-family: var(--mono);
+        font-size: clamp(1.6rem, 4vw, 2.4rem);
+        color: var(--red-ribbon, #8c1c13);
+        animation: blink .7s step-end infinite;
+}
+
+/* ─────────────────────────────────────────
+   READ PROGRESS BAR
+───────────────────────────────────────── */
+#read-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 3px;
+        width: 0%;
+        background: var(--red-ribbon);
+        z-index: 9998;
+        transition: width .1s linear;
+}
+
+/* ─────────────────────────────────────────
+   BACK TO TOP
+───────────────────────────────────────── */
+#back-to-top {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: var(--paper);
+        border: 1px solid var(--border);
+        color: var(--ink);
+        width: 42px;
+        height: 42px;
+        border-radius: 3px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        opacity: 0;
+        transform: translateY(12px);
+        transition: opacity .3s, transform .3s, border-color .2s;
+        z-index: 800;
+}
+
+#back-to-top.visible {
+        opacity: 1;
+        transform: translateY(0);
+}
+
+#back-to-top:hover {
+        border-color: var(--ink-faded);
+        color: var(--red-ribbon);
+}
+
+#back-to-top svg {
+        width: 18px;
+        height: 18px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+}
+
+/* ─────────────────────────────────────────
+   CAREER STATS
+───────────────────────────────────────── */
+.career-stats {
+        display: flex;
+        gap: 2rem;
+        margin-top: 1.5rem;
+        flex-wrap: wrap;
+}
+
+.cs-item {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+}
+
+.cs-num {
+        font-family: var(--mono);
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--red-ribbon);
+        line-height: 1;
+}
+
+.cs-label {
+        font-size: .75rem;
+        color: var(--ink-faded);
+        text-transform: uppercase;
+        letter-spacing: .08em;
+        margin-top: .25rem;
+}
+
+/* ─────────────────────────────────────────
+   TERMINAL INPUT ROW
+───────────────────────────────────────── */
+.term-input-row {
+        display: flex;
+        align-items: center;
+        gap: .4rem;
+        padding: 6px 12px;
+        border-top: 1px solid rgba(255,255,255,.08);
+}
+
+.term-input-field {
+        flex: 1;
+        background: none;
+        border: none;
+        outline: none;
+        color: #c8d0b0;
+        font-family: var(--mono);
+        font-size: .8rem;
+        caret-color: #c8d0b0;
+}
+
+.term-input-field::placeholder {
+        color: rgba(200,208,176,.35);
+}
+
+/* ─────────────────────────────────────────
+   PRINT STYLESHEET
+───────────────────────────────────────── */
+@media print {
+        #preloader, #read-progress, #back-to-top,
+        .nav-toggle, .site-nav, .grain-overlay,
+        .animate-on-scroll, .reveal-block { opacity: 1 !important; transform: none !important; }
+
+        body { background: #fff !important; color: #000 !important; font-size: 11pt; }
+        a { color: #000 !important; text-decoration: underline; }
+        .section-title::before { color: #000 !important; }
+
+        .stack-grid { columns: 2; }
+        .proj-grid { columns: 2; }
+
+        .terminal-window, nav, footer { display: none !important; }
+
+        @page { margin: 2cm; }
+}

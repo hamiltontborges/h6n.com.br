@@ -329,4 +329,121 @@
 		'color:#7a6347;font-family:monospace;font-size:.85em;'
 	);
 
+	/* ════════════════════════════════════════
+		 13. PRELOADER
+	════════════════════════════════════════ */
+	(function initPreloader() {
+		const el = document.getElementById('preloader');
+		const textEl = document.getElementById('plText');
+		if (!el || !textEl) return;
+
+		const msg = 'h6n_';
+		let i = 0;
+		const interval = setInterval(() => {
+			textEl.textContent = msg.slice(0, ++i);
+			if (i >= msg.length) clearInterval(interval);
+		}, 120);
+
+		const hide = () => el.classList.add('hidden');
+		if (document.readyState === 'complete') {
+			setTimeout(hide, 600);
+		} else {
+			window.addEventListener('load', () => setTimeout(hide, 600));
+		}
+	})();
+
+	/* ════════════════════════════════════════
+		 14. READ PROGRESS BAR
+	════════════════════════════════════════ */
+	(function initProgress() {
+		const bar = document.getElementById('read-progress');
+		if (!bar) return;
+		const update = () => {
+			const scrolled = window.scrollY;
+			const total = document.documentElement.scrollHeight - window.innerHeight;
+			bar.style.width = total > 0 ? (scrolled / total * 100) + '%' : '0%';
+		};
+		window.addEventListener('scroll', update, { passive: true });
+	})();
+
+	/* ════════════════════════════════════════
+		 15. BACK TO TOP
+	════════════════════════════════════════ */
+	(function initBackToTop() {
+		const btn = document.getElementById('back-to-top');
+		if (!btn) return;
+		window.addEventListener('scroll', () => {
+			btn.classList.toggle('visible', window.scrollY > 400);
+		}, { passive: true });
+		btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+	})();
+
+	/* ════════════════════════════════════════
+		 18. CAREER YEAR COUNTERS
+	════════════════════════════════════════ */
+	(function initYearCounters() {
+		const now = new Date().getFullYear();
+		const lawEl = document.getElementById('yr-law');
+		const devEl = document.getElementById('yr-dev');
+		if (lawEl) lawEl.textContent = now - 2014; // OAB desde 2014
+		if (devEl) devEl.textContent = now - 2019; // primeiro projeto sério em 2019
+	})();
+
+	/* ════════════════════════════════════════
+		 19. TERMINAL EASTER EGG (whoami / help)
+	════════════════════════════════════════ */
+	(function initTerminalInput() {
+		const inputRow = document.getElementById('termInputRow');
+		const field    = document.getElementById('termInputField');
+		const body     = document.getElementById('termBody');
+		if (!inputRow || !field || !body) return;
+
+		// Show input row once terminal body has been filled
+		const observer = new MutationObserver(() => {
+			if (body.children.length > 0) {
+				inputRow.style.display = 'flex';
+				observer.disconnect();
+			}
+		});
+		observer.observe(body, { childList: true });
+
+		const RESPONSES = {
+			whoami : '<span style="color:#c8d0b0">hamilton tumenas borges — gastrônomo, advogado, <span style="color:#a0d468">dev</span>.</span>',
+			help   : '<span style="color:#7da0a0">comandos disponíveis:</span> <span style="color:#c8d0b0">whoami, skills, contato, clear</span>',
+			skills : '<span style="color:#c8d0b0">python · ruby · rails · sql · js · css · linux · n8n · cloudflare · git</span>',
+			contato: '<span style="color:#c8d0b0">hamiltontubo@gmail.com · +55 (19) 99299-0279</span>',
+			clear  : '__CLEAR__',
+		};
+
+		const addLine = html => {
+			const p = document.createElement('p');
+			p.className = 't-output';
+			p.innerHTML = html;
+			body.appendChild(p);
+			body.scrollTop = body.scrollHeight;
+		};
+
+		field.addEventListener('keydown', e => {
+			if (e.key !== 'Enter') return;
+			const cmd = field.value.trim().toLowerCase();
+			field.value = '';
+			if (!cmd) return;
+
+			// echo the command
+			const echo = document.createElement('p');
+			echo.className = 't-line';
+			echo.innerHTML = `<span class="t-prompt">$ </span><span>${cmd}</span>`;
+			body.appendChild(echo);
+
+			const resp = RESPONSES[cmd];
+			if (resp === '__CLEAR__') {
+				body.innerHTML = '';
+			} else if (resp) {
+				addLine(resp);
+			} else {
+				addLine(`<span style="color:#e06c75">comando não encontrado: ${cmd}. Digite <em>help</em>.</span>`);
+			}
+		});
+	})();
+
 })();

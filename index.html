@@ -21,7 +21,7 @@
 	<meta property="og:title" content="Hamilton T. Borges — Desenvolvedor Ruby on Rails">
 	<meta property="og:description"
 		content="Gastrônomo, Advogado e Desenvolvedor de Software. Sistemas web, integrações com ERPs e marketplaces, IA aplicada. São João da Boa Vista, SP.">
-	<meta property="og:image" content="https://h6n.com.br/og-image.png">
+	<meta property="og:image" content="https://h6n.com.br/img/og-image.png">
 	<meta property="og:image:width" content="1200">
 	<meta property="og:image:height" content="630">
 	<meta property="og:image:alt" content="h6n.com.br — Hamilton Tumenas Borges">
@@ -34,10 +34,10 @@
 	<meta name="twitter:title" content="Hamilton T. Borges — Desenvolvedor Ruby on Rails">
 	<meta name="twitter:description"
 		content="Gastrônomo, Advogado e Desenvolvedor de Software. Sistemas web, integrações com ERPs e marketplaces, IA aplicada.">
-	<meta name="twitter:image" content="https://h6n.com.br/og-image.png">
+	<meta name="twitter:image" content="https://h6n.com.br/img/og-image.png">
 
 	<!-- ── Favicon ── -->
-	<link rel="icon" type="image/svg+xml" href="favicon.svg">
+	<link rel="icon" type="image/svg+xml" href="img/favicon.svg">
 
 	<!-- ── Structured Data (JSON-LD) ── -->
 	<script type="application/ld+json">
@@ -63,16 +63,19 @@
 	}
 	</script>
 
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link
-		href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap"
-		rel="stylesheet">
-
+	<link rel="stylesheet" href="css/fonts.css">
 	<link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
+
+	<!-- Preloader -->
+	<div id="preloader" aria-hidden="true">
+		<span class="pl-text" id="plText"></span><span class="pl-cursor">|</span>
+	</div>
+
+	<!-- Reading progress bar -->
+	<div id="read-progress" aria-hidden="true"></div>
 
 	<!-- Grain overlay -->
 	<div class="grain" aria-hidden="true"></div>
@@ -163,6 +166,20 @@
 						complexas, automações e IA aplicada. Sigo acreditando que <em>crescer e ajudar os
 							outros a crescerem</em> é o que dá sentido a qualquer coisa que se faça.
 					</p>
+					<div class="career-stats reveal-block">
+						<div class="cs-item">
+							<span class="cs-num">7</span>
+							<span class="cs-label">anos na cozinha</span>
+						</div>
+						<div class="cs-item">
+							<span class="cs-num" id="yr-law">11</span>
+							<span class="cs-label">anos de advocacia</span>
+						</div>
+						<div class="cs-item">
+							<span class="cs-num" id="yr-dev">6</span>
+							<span class="cs-label">anos em código</span>
+						</div>
+					</div>
 				</div>
 
 				<div class="sobre-card reveal-block">
@@ -344,6 +361,9 @@
 					</div>
 					<div class="term-body" id="termBody">
 						<!-- Filled by JS -->
+					</div>
+					<div class="term-input-row" id="termInputRow" style="display:none">
+						<span class="t-prompt">$ </span><input type="text" id="termInputField" class="term-input-field" spellcheck="false" autocomplete="off" autocorrect="off" placeholder="tente um comando...">
 					</div>
 				</div>
 				<div class="timeline">
@@ -727,6 +747,11 @@
 			</div>
 		</div>
 	</section>
+
+	<!-- Back to top -->
+	<button id="back-to-top" aria-label="Voltar ao topo" title="Voltar ao topo">
+		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+	</button>
 
 	<!-- Footer -->
 	<footer class="footer">
