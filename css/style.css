@@ -1251,25 +1251,23 @@ em {
 	gap: 12px;
 	transition: transform .2s ease, box-shadow .2s ease;
 	/* slight paper curl shadow */
-	box-shadow: 2px 3px 0 rgba(26,17,8,.08);
+	box-shadow: 2px 3px 0 rgba(26, 17, 8, .08);
 }
 
 .proj-card::before {
 	content: '';
 	position: absolute;
 	inset: 0;
-	background: repeating-linear-gradient(
-		transparent,
-		transparent 22px,
-		rgba(196,170,126,.13) 22px,
-		rgba(196,170,126,.13) 23px
-	);
+	background: repeating-linear-gradient(transparent,
+			transparent 22px,
+			rgba(196, 170, 126, .13) 22px,
+			rgba(196, 170, 126, .13) 23px);
 	pointer-events: none;
 }
 
 .proj-card:hover {
 	transform: translateY(-3px) rotate(.3deg);
-	box-shadow: 4px 6px 0 rgba(26,17,8,.12);
+	box-shadow: 4px 6px 0 rgba(26, 17, 8, .12);
 }
 
 .pc-header {
