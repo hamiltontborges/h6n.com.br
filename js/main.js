@@ -485,8 +485,8 @@
 				body.innerHTML = '';
 				cmdHistory.length = 0;
 			} else if (resp === '__HISTORY__') {
-					addLine(cmdHistory.length
-						? cmdHistory.map((c, i) => `<span style="color:#7da0a0">${i + 1}</span> ${c}`).join('&nbsp;&nbsp;')
+				addLine(cmdHistory.length
+					? cmdHistory.map((c, i) => `<span style="color:#7da0a0">${i + 1}</span> ${c}`).join('&nbsp;&nbsp;')
 					: '<span style="color:#7da0a0">(histórico vazio)</span>');
 			} else if (resp) {
 				addLine(resp);
