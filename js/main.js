@@ -43,18 +43,33 @@
 	════════════════════════════════════════ */
 	const ROLES = ['Gastrônomo', 'Advogado', 'Desenvolvedor'];
 	const identityEl = $('#identityWord');
-	let roleIdx = 0;
 
 	function startIdentityCycle() {
 		if (!identityEl) return;
-		setInterval(() => {
-			identityEl.classList.add('fade');
-			setTimeout(() => {
-				roleIdx = (roleIdx + 1) % ROLES.length;
-				identityEl.textContent = ROLES[roleIdx];
-				identityEl.classList.remove('fade');
-			}, 320);
-		}, 2800);
+		let wIdx = 0;
+		identityEl.textContent = '';
+
+		function typeWord(word, cb) {
+			let i = 0;
+			const t = setInterval(() => {
+				identityEl.textContent += word[i++];
+				if (i >= word.length) { clearInterval(t); setTimeout(cb, 1800); }
+			}, 95);
+		}
+
+		function eraseWord(cb) {
+			const t = setInterval(() => {
+				identityEl.textContent = identityEl.textContent.slice(0, -1);
+				if (!identityEl.textContent.length) { clearInterval(t); setTimeout(cb, 250); }
+			}, 60);
+		}
+
+		function cycle() {
+			wIdx = (wIdx + 1) % ROLES.length;
+			eraseWord(() => typeWord(ROLES[wIdx], cycle));
+		}
+
+		typeWord(ROLES[0], cycle);
 	}
 
 	/* ════════════════════════════════════════
@@ -379,14 +394,37 @@
 	})();
 
 	/* ════════════════════════════════════════
-		 18. CAREER YEAR COUNTERS
+		 18. CAREER YEAR COUNTERS (animados)
 	════════════════════════════════════════ */
 	(function initYearCounters() {
 		const now = new Date().getFullYear();
-		const lawEl = document.getElementById('yr-law');
-		const devEl = document.getElementById('yr-dev');
-		if (lawEl) lawEl.textContent = now - 2014; // OAB desde 2014
-		if (devEl) devEl.textContent = now - 2019; // primeiro projeto sério em 2019
+		const counters = [
+			{ el: document.getElementById('yr-kitchen'), target: 7 },
+			{ el: document.getElementById('yr-law'), target: now - 2014 },
+			{ el: document.getElementById('yr-dev'), target: now - 2019 },
+		];
+		// Valores reais imediatos (fallback sem JS)
+		counters.forEach(({ el, target }) => { if (el) el.textContent = target; });
+
+		const statsEl = document.querySelector('.career-stats');
+		if (!statsEl || !window.IntersectionObserver) return;
+
+		const obs = new IntersectionObserver(entries => {
+			if (!entries[0].isIntersecting) return;
+			obs.disconnect();
+			counters.forEach(({ el, target }) => {
+				if (!el) return;
+				let cur = 0;
+				const inc = target / 30;
+				const t = setInterval(() => {
+					cur = Math.min(cur + inc, target);
+					el.textContent = Math.ceil(cur);
+					if (cur >= target) clearInterval(t);
+				}, 40);
+			});
+		}, { threshold: 0.6 });
+
+		obs.observe(statsEl);
 	})();
 
 	/* ════════════════════════════════════════
@@ -407,11 +445,15 @@
 		});
 		observer.observe(body, { childList: true });
 
+		const cmdHistory = [];
 		const RESPONSES = {
 			whoami: '<span style="color:#c8d0b0">hamilton tumenas borges — gastrônomo, advogado, <span style="color:#a0d468">dev</span>.</span>',
-			help: '<span style="color:#7da0a0">comandos disponíveis:</span> <span style="color:#c8d0b0">whoami, skills, contato, clear</span>',
-			skills: '<span style="color:#c8d0b0">python · ruby · rails · sql · js · css · linux · n8n · cloudflare · git</span>',
+			help: '<span style="color:#7da0a0">comandos:</span> <span style="color:#c8d0b0">whoami, skills, contato, ls, cat sobre.txt, history, clear</span>',
+			skills: '<span style="color:#c8d0b0">ruby · rails · python · js · sql · linux · n8n · cloudflare · git</span>',
 			contato: '<span style="color:#c8d0b0">hamiltontubo@gmail.com · +55 (19) 99299-0279</span>',
+			ls: '<span style="color:#7da0a0">sobre.txt&nbsp;&nbsp;projetos/&nbsp;&nbsp;contato.txt&nbsp;&nbsp;.gitconfig&nbsp;&nbsp;README.md</span>',
+			'cat sobre.txt': '<span style="color:#c8d0b0">gastrônomo → chef no InterContinental SP. advogado → OAB/SP 357.236. dev → ruby on rails, python, sql.</span>',
+			history: '__HISTORY__',
 			clear: '__CLEAR__',
 		};
 
@@ -429,7 +471,10 @@
 			field.value = '';
 			if (!cmd) return;
 
-			// echo the command
+			// guarda no histórico (exceto o próprio 'history' e 'clear')
+			if (cmd !== 'history' && cmd !== 'clear') cmdHistory.push(cmd);
+
+			// echo do comando
 			const echo = document.createElement('p');
 			echo.className = 't-line';
 			echo.innerHTML = `<span class="t-prompt">$ </span><span>${cmd}</span>`;
@@ -438,12 +483,65 @@
 			const resp = RESPONSES[cmd];
 			if (resp === '__CLEAR__') {
 				body.innerHTML = '';
+				cmdHistory.length = 0;
+			} else if (resp === '__HISTORY__') {
+					addLine(cmdHistory.length
+						? cmdHistory.map((c, i) => `<span style="color:#7da0a0">${i + 1}</span> ${c}`).join('&nbsp;&nbsp;')
+					: '<span style="color:#7da0a0">(histórico vazio)</span>');
 			} else if (resp) {
 				addLine(resp);
 			} else {
 				addLine(`<span style="color:#e06c75">comando não encontrado: ${cmd}. Digite <em>help</em>.</span>`);
 			}
 		});
+	})();
+
+	/* ════════════════════════════════════════
+		 20. CARIMBO DISPONÍVEL
+	════════════════════════════════════════ */
+	(function initStamp() {
+		const stamp = document.getElementById('contatoStamp');
+		if (!stamp || !window.IntersectionObserver) return;
+
+		const obs = new IntersectionObserver(entries => {
+			if (entries[0].isIntersecting) {
+				setTimeout(() => stamp.classList.add('stamped'), 1400);
+				obs.disconnect();
+			}
+		}, { threshold: 0.4 });
+
+		obs.observe(stamp);
+	})();
+
+	/* ════════════════════════════════════════
+		 21. KONAMI CODE
+	════════════════════════════════════════ */
+	(function initKonami() {
+		const SEQ = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+		let idx = 0;
+		document.addEventListener('keydown', e => {
+			if (e.key === SEQ[idx]) {
+				idx++;
+				if (idx === SEQ.length) { idx = 0; fireKonami(); }
+			} else {
+				idx = e.key === SEQ[0] ? 1 : 0;
+			}
+		});
+
+		function fireKonami() {
+			const box = document.createElement('div');
+			box.id = 'konami-overlay';
+			box.innerHTML = `
+				<div class="konami-box">
+					<div class="konami-code">h6n_</div>
+					<p class="konami-msg">você encontrou o easter egg 🥚</p>
+					<p class="konami-ascii">gastrônomo&nbsp;·&nbsp;advogado&nbsp;·&nbsp;dev</p>
+					<button class="konami-close" id="konamiClose">[ fechar ]</button>
+				</div>`;
+			document.body.appendChild(box);
+			document.getElementById('konamiClose').addEventListener('click', () => box.remove());
+			document.addEventListener('keydown', e => { if (e.key === 'Escape') box.remove(); }, { once: true });
+		}
 	})();
 
 })();
