@@ -394,8 +394,8 @@
 	════════════════════════════════════════ */
 	(function initTerminalInput() {
 		const inputRow = document.getElementById('termInputRow');
-		const field    = document.getElementById('termInputField');
-		const body     = document.getElementById('termBody');
+		const field = document.getElementById('termInputField');
+		const body = document.getElementById('termBody');
 		if (!inputRow || !field || !body) return;
 
 		// Show input row once terminal body has been filled
@@ -408,11 +408,11 @@
 		observer.observe(body, { childList: true });
 
 		const RESPONSES = {
-			whoami : '<span style="color:#c8d0b0">hamilton tumenas borges — gastrônomo, advogado, <span style="color:#a0d468">dev</span>.</span>',
-			help   : '<span style="color:#7da0a0">comandos disponíveis:</span> <span style="color:#c8d0b0">whoami, skills, contato, clear</span>',
-			skills : '<span style="color:#c8d0b0">python · ruby · rails · sql · js · css · linux · n8n · cloudflare · git</span>',
+			whoami: '<span style="color:#c8d0b0">hamilton tumenas borges — gastrônomo, advogado, <span style="color:#a0d468">dev</span>.</span>',
+			help: '<span style="color:#7da0a0">comandos disponíveis:</span> <span style="color:#c8d0b0">whoami, skills, contato, clear</span>',
+			skills: '<span style="color:#c8d0b0">python · ruby · rails · sql · js · css · linux · n8n · cloudflare · git</span>',
 			contato: '<span style="color:#c8d0b0">hamiltontubo@gmail.com · +55 (19) 99299-0279</span>',
-			clear  : '__CLEAR__',
+			clear: '__CLEAR__',
 		};
 
 		const addLine = html => {
