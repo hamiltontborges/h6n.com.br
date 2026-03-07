@@ -1350,6 +1350,16 @@ em {
 	text-decoration: underline;
 }
 
+.proj-footnote {
+	margin-top: 40px;
+	font-family: 'Courier Prime', monospace;
+	font-size: .82rem;
+	color: var(--ink-faded);
+	font-style: italic;
+	letter-spacing: .03em;
+	opacity: .65;
+}
+
 @media (max-width: 480px) {
 	.proj-grid {
 		grid-template-columns: 1fr;
