@@ -1097,6 +1097,23 @@ em {
 	transform: rotate(12deg);
 }
 
+@media (max-width: 540px) {
+	.postmark {
+		top: 16px;
+		right: 16px;
+	}
+
+	.pm-circle {
+		width: 50px;
+		height: 50px;
+		font-size: .6rem;
+	}
+
+	.pm-sub {
+		font-size: .5rem;
+	}
+}
+
 .pm-circle {
 	width: 68px;
 	height: 68px;
@@ -1678,6 +1695,17 @@ em {
 	opacity: 0;
 	pointer-events: none;
 	user-select: none;
+}
+
+@media (max-width: 540px) {
+	.disponivel-stamp {
+		font-size: .65rem;
+		border-width: 2px;
+		padding: .2rem .55rem;
+		bottom: .75rem;
+		right: .75rem;
+		letter-spacing: .12em;
+	}
 }
 
 .disponivel-stamp.stamped {
