@@ -1203,6 +1203,45 @@ em {
 	text-decoration: none;
 }
 
+/* ─────────────────────────────────────────
+   UNDERLINE TINTA ESCORRENDO
+   Aplica-se em links de texto (nav, footer, contato)
+───────────────────────────────────────── */
+.nav-links a,
+.footer a,
+.tc-val a {
+	position: relative;
+	text-decoration: none;
+}
+
+.nav-links a::before,
+.footer a::before,
+.tc-val a::before {
+	content: '';
+	position: absolute;
+	bottom: -1px;
+	left: 0;
+	width: 100%;
+	height: 1.5px;
+	background: var(--ink);
+	transform-origin: top left;
+	transform: scaleY(0);
+	opacity: 0;
+	transition: transform .22s ease, opacity .22s ease;
+}
+
+.nav-links a:hover::before,
+.footer a:hover::before,
+.tc-val a:hover::before {
+	transform: scaleY(1);
+	opacity: 1;
+}
+
+/* mantém o ::after do nav (underline de active) intacto */
+.nav-links a::after {
+	z-index: 1;
+}
+
 .lc-icon {
 	display: flex;
 	align-items: center;
@@ -1381,7 +1420,11 @@ em {
 }
 
 .pc-link:hover {
-	text-decoration: underline;
+	text-decoration: none;
+	background-image: linear-gradient(to right, var(--red-ribbon), var(--red-ribbon));
+	background-repeat: no-repeat;
+	background-position: 0 100%;
+	background-size: 100% 1px;
 }
 
 .proj-footnote {
@@ -1656,32 +1699,55 @@ em {
 }
 
 /* ─────────────────────────────────────────
-   STACK KEYS — TOOLTIPS
+   STACK KEYS — TOOLTIPS (aprimorado)
 ───────────────────────────────────────── */
 .key[data-tip] {
 	position: relative;
 }
 
+/* balão do tooltip */
 .key[data-tip]::after {
 	content: attr(data-tip);
 	position: absolute;
-	bottom: calc(100% + 8px);
+	bottom: calc(100% + 10px);
 	left: 50%;
-	transform: translateX(-50%) translateY(4px);
+	transform: translateX(-50%) translateY(6px);
 	background: var(--ink);
 	color: var(--paper);
 	font-family: var(--font-mono);
 	font-size: .62rem;
-	padding: .22rem .55rem;
+	padding: .25rem .65rem;
 	border-radius: 2px;
 	white-space: nowrap;
 	pointer-events: none;
 	opacity: 0;
-	transition: opacity .18s, transform .18s;
+	transition: opacity .2s, transform .2s;
+	z-index: 100;
+	box-shadow: 0 2px 8px rgba(0,0,0,.18);
+	letter-spacing: .06em;
+}
+
+/* seta do tooltip */
+.key[data-tip]::before {
+	content: '';
+	position: absolute;
+	bottom: calc(100% + 5px);
+	left: 50%;
+	transform: translateX(-50%) translateY(6px);
+	border: 5px solid transparent;
+	border-top-color: var(--ink);
+	pointer-events: none;
+	opacity: 0;
+	transition: opacity .2s, transform .2s;
 	z-index: 100;
 }
 
 .key[data-tip]:hover::after {
+	opacity: 1;
+	transform: translateX(-50%) translateY(0);
+}
+
+.key[data-tip]:hover::before {
 	opacity: 1;
 	transform: translateX(-50%) translateY(0);
 }
@@ -1821,9 +1887,26 @@ em {
 	color: var(--red-ribbon);
 }
 
-/* ── Cursor personalizado (apenas desktop/mouse) ── */
+/* ─────────────────────────────────────────
+   CURSOR PERSONALIZADO — mira + gota de tinta
+   (apenas dispositivos com mouse)
+───────────────────────────────────────── */
 @media (pointer: fine) {
+	/* Cursor padrão: mira fina com ponto central (hotspot ao centro) */
 	* {
-		cursor: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='14'%20height='20'%20viewBox='0%200%2014%2020'%3E%3Cpath%20d='M2%200%20L2%2016.5%20L5.5%2012.5%20L8.5%2019%20L11%2018%20L8%2011.5%20L13.5%2011.5%20Z'%20fill='%231a1108'/%3E%3C/svg%3E") 2 0, auto !important;
+		cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cline x1='10' y1='1' x2='10' y2='8' stroke='%231a1108' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='10' y1='12' x2='10' y2='19' stroke='%231a1108' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='1' y1='10' x2='8' y2='10' stroke='%231a1108' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='12' y1='10' x2='19' y2='10' stroke='%231a1108' stroke-width='1.5' stroke-linecap='round'/%3E%3Ccircle cx='10' cy='10' r='2' fill='%231a1108'/%3E%3C/svg%3E") 10 10, crosshair;
+	}
+
+	/* Cursor interativo: gota de tinta vermelha (hotspot no topo da gota) */
+	a, a *,
+	button, button *,
+	[role='tab'], [role='tab'] *,
+	.key, .key *,
+	.lc-item, .lc-item *,
+	.c-tab, .c-tab *,
+	label, input, select, textarea,
+	[onclick], .hero-scroll-hint, .hero-scroll-hint *,
+	#back-to-top, #back-to-top * {
+		cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='22' viewBox='0 0 16 22'%3E%3Cpath d='M8 1 C8 1 15 10 15 14 C15 18.4 11.9 21 8 21 C4.1 21 1 18.4 1 14 C1 10 8 1 8 1 Z' fill='%238c1c13' opacity='.88'/%3E%3Ccircle cx='8' cy='14' r='2.5' fill='rgba(255,255,255,.25)'/%3E%3C/svg%3E") 8 1, pointer !important;
 	}
 }

@@ -457,26 +457,26 @@
 			clear: '__CLEAR__',
 		};
 
-const addLine = (html, instant) => {
-                        const p = document.createElement('p');
-                        p.className = 't-output';
-                        body.appendChild(p);
-                        body.scrollTop = body.scrollHeight;
-                        if (instant) { p.innerHTML = html; return; }
-                        let i = 0;
-                        const tick = () => {
-                                if (i >= html.length) return;
-                                if (html[i] === '<') {
-                                        const end = html.indexOf('>', i);
-                                        i = (end !== -1) ? end + 1 : i + 1;
-                                } else {
-                                        i++;
-                                }
-                                p.innerHTML = html.slice(0, i);
-                                body.scrollTop = body.scrollHeight;
-                                setTimeout(tick, 14);
-                        };
-                        tick();
+		const addLine = (html, instant) => {
+			const p = document.createElement('p');
+			p.className = 't-output';
+			body.appendChild(p);
+			body.scrollTop = body.scrollHeight;
+			if (instant) { p.innerHTML = html; return; }
+			let i = 0;
+			const tick = () => {
+				if (i >= html.length) return;
+				if (html[i] === '<') {
+					const end = html.indexOf('>', i);
+					i = (end !== -1) ? end + 1 : i + 1;
+				} else {
+					i++;
+				}
+				p.innerHTML = html.slice(0, i);
+				body.scrollTop = body.scrollHeight;
+				setTimeout(tick, 14);
+			};
+			tick();
 		};
 
 		field.addEventListener('keydown', e => {
@@ -563,34 +563,34 @@ const addLine = (html, instant) => {
 
 /* Section 22: Active nav underline */
 (function () {
-        var navLinks = document.querySelectorAll('.nav-links a');
-        var sections = document.querySelectorAll('section[id]');
-        if (!navLinks.length || !sections.length) return;
-        var activate = function(id) {
-                navLinks.forEach(function(a) { a.classList.remove('active'); });
-                var a = document.querySelector('.nav-links a[href="#' + id + '"]');
-                if (a) a.classList.add('active');
-        };
-        var io = new IntersectionObserver(function(entries) {
-                entries.forEach(function(entry) {
-                        if (entry.isIntersecting) activate(entry.target.id);
-                });
-        }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
-        sections.forEach(function(s) { io.observe(s); });
+	var navLinks = document.querySelectorAll('.nav-links a');
+	var sections = document.querySelectorAll('section[id]');
+	if (!navLinks.length || !sections.length) return;
+	var activate = function (id) {
+		navLinks.forEach(function (a) { a.classList.remove('active'); });
+		var a = document.querySelector('.nav-links a[href="#' + id + '"]');
+		if (a) a.classList.add('active');
+	};
+	var io = new IntersectionObserver(function (entries) {
+		entries.forEach(function (entry) {
+			if (entry.isIntersecting) activate(entry.target.id);
+		});
+	}, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+	sections.forEach(function (s) { io.observe(s); });
 })();
 
 /* Section 24: Fake visitor counter */
 (function () {
-        var el = document.getElementById('heroVisitor');
-        if (!el) return;
-        var KEY = 'h6n_visitor';
-        var stored = localStorage.getItem(KEY);
-        var n;
-        if (stored) {
-                n = parseInt(stored, 10) + Math.floor(Math.random() * 5) + 1;
-        } else {
-                n = 1200 + Math.floor(Math.random() * 1600);
-        }
-        localStorage.setItem(KEY, n);
-        el.textContent = 'visitante #' + n.toLocaleString('pt-BR');
+	var el = document.getElementById('heroVisitor');
+	if (!el) return;
+	var KEY = 'h6n_visitor';
+	var stored = localStorage.getItem(KEY);
+	var n;
+	if (stored) {
+		n = parseInt(stored, 10) + Math.floor(Math.random() * 5) + 1;
+	} else {
+		n = 1200 + Math.floor(Math.random() * 1600);
+	}
+	localStorage.setItem(KEY, n);
+	el.textContent = 'visitante #' + n.toLocaleString('pt-BR');
 })();
