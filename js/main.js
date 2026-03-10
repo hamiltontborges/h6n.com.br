@@ -81,8 +81,12 @@
 	tabs.forEach(tab => {
 		tab.addEventListener('click', () => {
 			const target = tab.dataset.chapter;
+			const currentCh = chapters.find(ch => ch.classList.contains('active'));
+			const nextCh = chapters.find(ch => ch.id === `ch-${target}`);
 
-			// Update tabs
+			if (!nextCh || currentCh === nextCh) return;
+
+			// Update tab buttons
 			tabs.forEach(t => {
 				t.classList.remove('active');
 				t.setAttribute('aria-selected', 'false');
@@ -90,27 +94,31 @@
 			tab.classList.add('active');
 			tab.setAttribute('aria-selected', 'true');
 
-			// Update panels
-			chapters.forEach(ch => {
-				const show = ch.id === `ch-${target}`;
-				ch.classList.toggle('active', show);
-				ch.hidden = !show;
+			// Saída animada do chapter atual
+			if (currentCh) currentCh.classList.add('ch-leaving');
 
-				if (show) {
-					// Re-trigger reveal for newly visible items
-					$$('.reveal-item, .reveal-block', ch).forEach(el => {
-						el.classList.remove('visible');
-						requestAnimationFrame(() => {
-							setTimeout(() => el.classList.add('visible'), 50);
-						});
-					});
-
-					// If tech tab, run terminal animation
-					if (target === 'tech') {
-						runTerminal();
-					}
+			setTimeout(() => {
+				// Esconde o antigo
+				if (currentCh) {
+					currentCh.classList.remove('active', 'ch-leaving');
+					currentCh.hidden = true;
 				}
-			});
+
+				// Exibe o novo
+				nextCh.hidden = false;
+				nextCh.classList.add('active');
+
+				// Re-trigger reveals
+				$$('.reveal-item, .reveal-block', nextCh).forEach(el => {
+					el.classList.remove('visible');
+					requestAnimationFrame(() => {
+						setTimeout(() => el.classList.add('visible'), 50);
+					});
+				});
+
+				// Terminal animation
+				if (target === 'tech') runTerminal();
+			}, 210);
 		});
 	});
 

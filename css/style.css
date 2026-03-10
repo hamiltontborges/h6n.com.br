@@ -783,6 +783,37 @@ em {
 
 .chapter.active {
 	display: block;
+	animation: chapterIn .28s ease forwards;
+}
+
+.chapter.ch-leaving {
+	display: block;
+	animation: chapterOut .21s ease forwards;
+	pointer-events: none;
+}
+
+@keyframes chapterIn {
+	from {
+		opacity: 0;
+		transform: translateX(14px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes chapterOut {
+	from {
+		opacity: 1;
+		transform: translateX(0);
+	}
+
+	to {
+		opacity: 0;
+		transform: translateX(-14px);
+	}
 }
 
 /* Chapter stamp */
@@ -846,6 +877,30 @@ em {
 	border-bottom: none;
 }
 
+/* Stamp hover */
+.tl-item::after {
+	content: '✓';
+	position: absolute;
+	top: 16px;
+	right: 2px;
+	font-family: var(--font-type);
+	font-size: .7rem;
+	letter-spacing: .12em;
+	color: var(--ink-faded);
+	border: 1.5px solid var(--border);
+	padding: 2px 7px;
+	border-radius: 2px;
+	transform: rotate(7deg) scale(.3);
+	opacity: 0;
+	transition: opacity .2s ease, transform .25s cubic-bezier(.2, .8, .3, 1.4);
+	pointer-events: none;
+}
+
+.tl-item:hover::after {
+	opacity: .45;
+	transform: rotate(7deg) scale(1);
+}
+
 /* Timeline dot */
 .tl-item::before {
 	content: '';
@@ -862,10 +917,9 @@ em {
 
 .tl-year {
 	font-family: var(--font-mono);
-	font-size: .76rem;
+	font-size: 0.9rem;
 	color: var(--ink-faded);
 	letter-spacing: .06em;
-	padding-top: 4px;
 	white-space: nowrap;
 }
 
@@ -889,7 +943,7 @@ em {
 	}
 
 	.tl-year {
-		font-size: .72rem;
+		font-size: 0.9rem;
 	}
 }
 
