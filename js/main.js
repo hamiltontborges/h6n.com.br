@@ -602,3 +602,40 @@
 	localStorage.setItem(KEY, n);
 	el.textContent = 'visitante #' + n.toLocaleString('pt-BR');
 })();
+
+/* ════════════════════════════════════════
+   THEME TOGGLE
+════════════════════════════════════════ */
+(function initThemeToggle() {
+	var btn = document.getElementById('themeToggle');
+	var label = document.getElementById('themeLabel');
+	var html = document.documentElement;
+	if (!btn || !label) return;
+
+	var STORAGE_KEY = 'h6n_theme';
+
+	function applyTheme(theme, animate) {
+		if (animate) {
+			html.style.transition = 'background-color .35s ease';
+			document.body.style.transition = 'background-color .35s ease, color .35s ease';
+		}
+		if (theme === 'terminal') {
+			html.setAttribute('data-theme', 'terminal');
+			label.textContent = 'paper';
+		} else {
+			html.removeAttribute('data-theme');
+			label.textContent = 'term_';
+		}
+	}
+
+	// Inicializa com o tema salvo
+	var saved = localStorage.getItem(STORAGE_KEY) || 'paper';
+	applyTheme(saved, false);
+
+	btn.addEventListener('click', function () {
+		var current = html.getAttribute('data-theme');
+		var next = current === 'terminal' ? 'paper' : 'terminal';
+		localStorage.setItem(STORAGE_KEY, next);
+		applyTheme(next, true);
+	});
+})();
