@@ -123,6 +123,9 @@
 
 				// Terminal animation
 				if (target === 'tech') runTerminal();
+
+				// Recalcula a linha de tinta da timeline recém-exibida
+				window.dispatchEvent(new Event('scroll'));
 			}, 210);
 		});
 	});
@@ -602,6 +605,191 @@
 			document.getElementById('konamiClose').addEventListener('click', () => box.remove());
 			document.addEventListener('keydown', e => { if (e.key === 'Escape') box.remove(); }, { once: true });
 		}
+	})();
+
+	/* ════════════════════════════════════════
+		 25. PROJECT CARD TILT (3D paper lift)
+	════════════════════════════════════════ */
+	(function initCardTilt() {
+		const fine = window.matchMedia('(pointer: fine)').matches;
+		const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		if (!fine || reduced) return;
+
+		const MAX_DEG = 4;
+		$$('.proj-card').forEach(card => {
+			card.addEventListener('mousemove', e => {
+				const r = card.getBoundingClientRect();
+				const px = (e.clientX - r.left) / r.width - .5;
+				const py = (e.clientY - r.top) / r.height - .5;
+				card.style.transform =
+					`perspective(700px) rotateX(${(-py * MAX_DEG).toFixed(2)}deg) rotateY(${(px * MAX_DEG).toFixed(2)}deg) translateY(-3px)`;
+			});
+			card.addEventListener('mouseleave', () => {
+				card.style.transform = '';
+			});
+		});
+	})();
+
+	/* ════════════════════════════════════════
+		 26. TIMELINE INK LINE (drawn on scroll)
+	════════════════════════════════════════ */
+	(function initTimelineInk() {
+		const timelines = $$('.timeline');
+		if (!timelines.length) return;
+
+		function update() {
+			const vh = window.innerHeight;
+			timelines.forEach(tl => {
+				if (!tl.offsetParent) return; // chapter oculto
+				const r = tl.getBoundingClientRect();
+				if (!r.height) return;
+				const p = Math.min(1, Math.max(0, (vh * .8 - r.top) / r.height));
+				tl.style.setProperty('--tl-ink', p.toFixed(3));
+			});
+		}
+
+		window.addEventListener('scroll', update, { passive: true });
+		window.addEventListener('resize', update, { passive: true });
+		update();
+	})();
+
+	/* ════════════════════════════════════════
+		 27. COMMAND PALETTE (⌘K / ctrl+K / "/")
+	════════════════════════════════════════ */
+	(function initCmdPalette() {
+		const goTo = sel => {
+			const t = $(sel);
+			if (!t) return;
+			const top = t.getBoundingClientRect().top + window.scrollY - 52;
+			window.scrollTo({ top, behavior: 'smooth' });
+		};
+
+		const CMDS = EN ? [
+			{ label: 'go: about', hint: '01', run: () => goTo('#about') },
+			{ label: 'go: journey', hint: '02', run: () => goTo('#journey') },
+			{ label: 'go: stack', hint: '03', run: () => goTo('#stack') },
+			{ label: 'go: projects', hint: '04', run: () => goTo('#projects') },
+			{ label: 'go: contact', hint: '05', run: () => goTo('#contact') },
+			{ label: 'theme: toggle', hint: 'paper / term_', run: () => $('#themeToggle')?.click() },
+			{ label: 'lang: português', hint: 'pt-BR', run: () => { location.href = '../'; } },
+			{ label: 'email: hamilton@h6n.com.br', hint: 'mailto', run: () => { location.href = 'mailto:hamilton@h6n.com.br'; } },
+			{ label: 'open: github', hint: '↗', run: () => window.open('https://github.com/hamiltontborges', '_blank') },
+			{ label: 'open: linkedin', hint: '↗', run: () => window.open('https://linkedin.com/in/hamiltontborges', '_blank') },
+		] : [
+			{ label: 'ir: sobre', hint: '01', run: () => goTo('#sobre') },
+			{ label: 'ir: trajetória', hint: '02', run: () => goTo('#trajetoria') },
+			{ label: 'ir: stack', hint: '03', run: () => goTo('#stack') },
+			{ label: 'ir: projetos', hint: '04', run: () => goTo('#projetos') },
+			{ label: 'ir: contato', hint: '05', run: () => goTo('#contato') },
+			{ label: 'tema: alternar', hint: 'paper / term_', run: () => $('#themeToggle')?.click() },
+			{ label: 'lang: english', hint: 'en', run: () => { location.href = 'en/'; } },
+			{ label: 'email: hamilton@h6n.com.br', hint: 'mailto', run: () => { location.href = 'mailto:hamilton@h6n.com.br'; } },
+			{ label: 'abrir: github', hint: '↗', run: () => window.open('https://github.com/hamiltontborges', '_blank') },
+			{ label: 'abrir: linkedin', hint: '↗', run: () => window.open('https://linkedin.com/in/hamiltontborges', '_blank') },
+		];
+
+		let overlay = null, input = null, list = null, selIdx = 0, filtered = CMDS;
+
+		function render() {
+			list.innerHTML = '';
+			if (!filtered.length) {
+				const li = document.createElement('li');
+				li.className = 'cmdk-empty';
+				li.textContent = EN ? 'no matching command' : 'nenhum comando encontrado';
+				list.appendChild(li);
+				return;
+			}
+			filtered.forEach((c, i) => {
+				const li = document.createElement('li');
+				li.className = 'cmdk-item' + (i === selIdx ? ' sel' : '');
+				const lbl = document.createElement('span');
+				lbl.textContent = c.label;
+				const hint = document.createElement('span');
+				hint.className = 'cmdk-hint';
+				hint.textContent = c.hint;
+				li.appendChild(lbl);
+				li.appendChild(hint);
+				li.addEventListener('click', () => runCmd(c));
+				list.appendChild(li);
+			});
+			list.children[selIdx]?.scrollIntoView({ block: 'nearest' });
+		}
+
+		function runCmd(c) {
+			close();
+			c.run();
+		}
+
+		function open() {
+			if (overlay) return;
+			overlay = document.createElement('div');
+			overlay.id = 'cmdk-overlay';
+			overlay.innerHTML = `
+				<div class="cmdk-box">
+					<div class="cmdk-input-row">
+						<span class="cmdk-prompt">$</span>
+						<input class="cmdk-input" type="text" spellcheck="false" autocomplete="off"
+							placeholder="${EN ? 'type a command...' : 'digite um comando...'}">
+					</div>
+					<ul class="cmdk-list"></ul>
+					<div class="cmdk-foot">
+						<span>↑↓ ${EN ? 'navigate' : 'navegar'}</span>
+						<span>↵ ${EN ? 'run' : 'executar'}</span>
+						<span>esc ${EN ? 'close' : 'fechar'}</span>
+					</div>
+				</div>`;
+			document.body.appendChild(overlay);
+			input = $('.cmdk-input', overlay);
+			list = $('.cmdk-list', overlay);
+			selIdx = 0;
+			filtered = CMDS;
+			render();
+			input.focus();
+
+			input.addEventListener('input', () => {
+				const q = input.value.trim().toLowerCase();
+				filtered = CMDS.filter(c => c.label.toLowerCase().includes(q));
+				selIdx = 0;
+				render();
+			});
+
+			overlay.addEventListener('click', e => {
+				if (e.target === overlay) close();
+			});
+		}
+
+		function close() {
+			if (!overlay) return;
+			overlay.remove();
+			overlay = null;
+		}
+
+		document.addEventListener('keydown', e => {
+			if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+				e.preventDefault();
+				overlay ? close() : open();
+				return;
+			}
+			const tag = (document.activeElement?.tagName || '').toLowerCase();
+			const typing = tag === 'input' || tag === 'textarea';
+			if (!overlay && e.key === '/' && !typing) {
+				e.preventDefault();
+				open();
+				return;
+			}
+			if (!overlay) return;
+			if (e.key === 'Escape') {
+				close();
+			} else if (e.key === 'ArrowDown') {
+				e.preventDefault();
+				if (filtered.length) { selIdx = (selIdx + 1) % filtered.length; render(); }
+			} else if (e.key === 'ArrowUp') {
+				e.preventDefault();
+				if (filtered.length) { selIdx = (selIdx - 1 + filtered.length) % filtered.length; render(); }
+			} else if (e.key === 'Enter') {
+				if (filtered[selIdx]) runCmd(filtered[selIdx]);
+			}
+		});
 	})();
 
 })();
