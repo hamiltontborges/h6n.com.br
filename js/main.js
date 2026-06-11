@@ -132,9 +132,9 @@
 		{ type: 'blank' },
 		{ type: 'cmd', text: 'cat stack.txt' },
 		{ type: 'out', text: 'Ruby on Rails · JavaScript · React · Node.js' },
-		{ type: 'out', text: 'PostgreSQL · SQLite · DuckDB · MongoDB' },
+		{ type: 'out', text: 'PostgreSQL · SQLite · DuckDB' },
 		{ type: 'out', text: 'TailwindCSS · Hotwire · Git · GitHub' },
-		{ type: 'out', text: 'ChatGPT · Claude · Gemini' },
+		{ type: 'out', text: 'OpenAI API · Anthropic API · automação com IA' },
 		{ type: 'blank' },
 		{ type: 'cmd', text: 'cat attitude.txt' },
 		{ type: 'out', text: '"crescer e ajudar os outros a crescerem"' },
@@ -348,7 +348,7 @@
 		'background:#1a1108;color:#f4edd8;font-family:monospace;font-size:1.2em;padding:6px 12px;'
 	);
 	console.log(
-		'%cHamilton Tumenas Borges — Gastrônomo · Advogado · Dev\nhamiltontubo@gmail.com',
+		'%cHamilton Tumenas Borges — Gastrônomo · Advogado · Dev\nhamilton@h6n.com.br',
 		'color:#7a6347;font-family:monospace;font-size:.85em;'
 	);
 
@@ -458,7 +458,7 @@
 			whoami: '<span style="color:#c8d0b0">hamilton tumenas borges — gastrônomo, advogado, <span style="color:#a0d468">dev</span>.</span>',
 			help: '<span style="color:#7da0a0">comandos:</span> <span style="color:#c8d0b0">whoami, skills, contato, ls, cat sobre.txt, history, clear</span>',
 			skills: '<span style="color:#c8d0b0">ruby · rails · python · js · sql · linux · n8n · cloudflare · git</span>',
-			contato: '<span style="color:#c8d0b0">hamiltontubo@gmail.com · +55 (19) 99299-0279</span>',
+			contato: '<span style="color:#c8d0b0">hamilton@h6n.com.br · +55 (19) 99299-0279</span>',
 			ls: '<span style="color:#7da0a0">sobre.txt&nbsp;&nbsp;projetos/&nbsp;&nbsp;contato.txt&nbsp;&nbsp;.gitconfig&nbsp;&nbsp;README.md</span>',
 			'cat sobre.txt': '<span style="color:#c8d0b0">gastrônomo → chef no InterContinental SP. advogado → OAB/SP 357.236. dev → ruby on rails, python, sql.</span>',
 			history: '__HISTORY__',

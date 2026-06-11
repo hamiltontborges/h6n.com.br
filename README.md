@@ -20,4 +20,4 @@ Seções:
 ## Autor
 
 **Hamilton Tumenas Borges**
-[hamiltontubo@gmail.com](mailto:hamiltontubo@gmail.com) · [github.com/hamiltontborges](https://github.com/hamiltontborges) · [linkedin.com/in/hamiltontborges](https://linkedin.com/in/hamiltontborges)
+[hamilton@h6n.com.br](mailto:hamilton@h6n.com.br) · [github.com/hamiltontborges](https://github.com/hamiltontborges) · [linkedin.com/in/hamiltontborges](https://linkedin.com/in/hamiltontborges)
