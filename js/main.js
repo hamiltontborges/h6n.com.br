@@ -792,6 +792,31 @@
 		});
 	})();
 
+	/* ════════════════════════════════════════
+		 28. SECTION MARK PARALLAX (01–05 drift
+				slower than the content on scroll)
+	════════════════════════════════════════ */
+	(function initMarkParallax() {
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+		const marks = $$('.section-mark');
+		if (!marks.length) return;
+
+		function update() {
+			const vh = window.innerHeight;
+			marks.forEach(m => {
+				const r = m.parentElement.getBoundingClientRect();
+				if (r.bottom < 0 || r.top > vh) return;
+				// -1..1 conforme a seção cruza o centro da viewport
+				const p = (r.top + r.height / 2 - vh / 2) / vh;
+				m.style.transform = `translateY(${(p * 48).toFixed(1)}px)`;
+			});
+		}
+
+		window.addEventListener('scroll', update, { passive: true });
+		window.addEventListener('resize', update, { passive: true });
+		update();
+	})();
+
 })();
 
 

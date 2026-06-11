@@ -2561,3 +2561,73 @@ body {
 [data-theme="terminal"] .cmdk-item:hover {
 	background: rgba(57, 211, 83, .12);
 }
+
+/* ─────────────────────────────────────────
+   BACKGROUND MOTION (subtle, analog)
+───────────────────────────────────────── */
+
+/* Hero guide lines: slow light sweep */
+.h-line {
+	background-size: 200% 100%;
+	animation: lineSweep 38s ease-in-out infinite alternate;
+}
+
+.h-line:nth-child(2n) {
+	animation-duration: 47s;
+}
+
+.h-line:nth-child(3n) {
+	animation-delay: -13s;
+}
+
+.h-line:nth-child(5n) {
+	animation-delay: -27s;
+	animation-duration: 55s;
+}
+
+@keyframes lineSweep {
+	from {
+		background-position-x: 0%;
+	}
+
+	to {
+		background-position-x: 100%;
+	}
+}
+
+/* Fragments: idle drift — the `translate` property composes with the
+   JS mouse-parallax transform instead of overriding it */
+.frag {
+	animation: floatFrag 18s ease-in-out infinite, fragBob 16s ease-in-out infinite;
+}
+
+@keyframes fragBob {
+
+	0%,
+	100% {
+		translate: 0 0;
+	}
+
+	33% {
+		translate: 2px -7px;
+	}
+
+	66% {
+		translate: -2px -3px;
+	}
+}
+
+/* Section marks get a slow scroll parallax via JS (inline transform) */
+.section-mark {
+	transition: transform .1s linear;
+	will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+	.h-line,
+	.frag,
+	.grain {
+		animation: none;
+	}
+}
