@@ -10,6 +10,9 @@
 	const $ = (s, ctx = document) => ctx.querySelector(s);
 	const $$ = (s, ctx = document) => [...ctx.querySelectorAll(s)];
 
+	/* ── Locale (en/index.html sets lang="en") ── */
+	const EN = (document.documentElement.lang || '').toLowerCase().startsWith('en');
+
 	/* ════════════════════════════════════════
 		 1. TYPEWRITER — Hero name
 	════════════════════════════════════════ */
@@ -41,7 +44,9 @@
 	/* ════════════════════════════════════════
 		 2. IDENTITY WORD CYCLE
 	════════════════════════════════════════ */
-	const ROLES = ['Gastrônomo', 'Advogado', 'Desenvolvedor'];
+	const ROLES = EN
+		? ['Chef', 'Lawyer', 'Developer']
+		: ['Gastrônomo', 'Advogado', 'Desenvolvedor'];
 	const identityEl = $('#identityWord');
 
 	function startIdentityCycle() {
@@ -125,7 +130,21 @@
 	/* ════════════════════════════════════════
 		 4. TERMINAL ANIMATION
 	════════════════════════════════════════ */
-	const TERM_LINES = [
+	const TERM_LINES = EN ? [
+		{ type: 'cmd', text: 'cat education.txt' },
+		{ type: 'out', text: '📚 Systems Analysis & Development — UNIFEOB (2020–2022)' },
+		{ type: 'out', text: '📚 Full Stack Web Dev, postgrad — Anhanguera (2022)' },
+		{ type: 'blank' },
+		{ type: 'cmd', text: 'cat stack.txt' },
+		{ type: 'out', text: 'Ruby on Rails · JavaScript · React · Node.js' },
+		{ type: 'out', text: 'PostgreSQL · SQLite · DuckDB' },
+		{ type: 'out', text: 'TailwindCSS · Hotwire · Git · GitHub' },
+		{ type: 'out', text: 'OpenAI API · Anthropic API · AI automation' },
+		{ type: 'blank' },
+		{ type: 'cmd', text: 'cat attitude.txt' },
+		{ type: 'out', text: '"to grow, and to help others grow"' },
+		{ type: 'cursor' },
+	] : [
 		{ type: 'cmd', text: 'cat formacao.txt' },
 		{ type: 'out', text: '📚 ADS — UNIFEOB (2020–2022)' },
 		{ type: 'out', text: '📚 Pós Full Stack — Anhanguera (2022)' },
@@ -348,7 +367,9 @@
 		'background:#1a1108;color:#f4edd8;font-family:monospace;font-size:1.2em;padding:6px 12px;'
 	);
 	console.log(
-		'%cHamilton Tumenas Borges — Gastrônomo · Advogado · Dev\nhamilton@h6n.com.br',
+		EN
+			? '%cHamilton Tumenas Borges — Chef · Lawyer · Dev\nhamilton@h6n.com.br'
+			: '%cHamilton Tumenas Borges — Gastrônomo · Advogado · Dev\nhamilton@h6n.com.br',
 		'color:#7a6347;font-family:monospace;font-size:.85em;'
 	);
 
@@ -454,7 +475,16 @@
 		observer.observe(body, { childList: true });
 
 		const cmdHistory = [];
-		const RESPONSES = {
+		const RESPONSES = EN ? {
+			whoami: '<span style="color:#c8d0b0">hamilton tumenas borges — chef, lawyer, <span style="color:#a0d468">dev</span>.</span>',
+			help: '<span style="color:#7da0a0">commands:</span> <span style="color:#c8d0b0">whoami, skills, contact, ls, cat about.txt, history, clear</span>',
+			skills: '<span style="color:#c8d0b0">ruby · rails · python · js · sql · linux · n8n · cloudflare · git</span>',
+			contact: '<span style="color:#c8d0b0">hamilton@h6n.com.br · +55 (19) 99299-0279</span>',
+			ls: '<span style="color:#7da0a0">about.txt&nbsp;&nbsp;projects/&nbsp;&nbsp;contact.txt&nbsp;&nbsp;.gitconfig&nbsp;&nbsp;README.md</span>',
+			'cat about.txt': '<span style="color:#c8d0b0">chef → InterContinental São Paulo. lawyer → OAB/SP 357.236. dev → ruby on rails, python, sql.</span>',
+			history: '__HISTORY__',
+			clear: '__CLEAR__',
+		} : {
 			whoami: '<span style="color:#c8d0b0">hamilton tumenas borges — gastrônomo, advogado, <span style="color:#a0d468">dev</span>.</span>',
 			help: '<span style="color:#7da0a0">comandos:</span> <span style="color:#c8d0b0">whoami, skills, contato, ls, cat sobre.txt, history, clear</span>',
 			skills: '<span style="color:#c8d0b0">ruby · rails · python · js · sql · linux · n8n · cloudflare · git</span>',
@@ -509,11 +539,13 @@
 			} else if (resp === '__HISTORY__') {
 				addLine(cmdHistory.length
 					? cmdHistory.map((c, i) => `<span style="color:#7da0a0">${i + 1}</span> ${c}`).join('&nbsp;&nbsp;')
-					: '<span style="color:#7da0a0">(histórico vazio)</span>');
+					: `<span style="color:#7da0a0">${EN ? '(empty history)' : '(histórico vazio)'}</span>`);
 			} else if (resp) {
 				addLine(resp);
 			} else {
-				addLine(`<span style="color:#e06c75">comando não encontrado: ${cmd}. Digite <em>help</em>.</span>`);
+				addLine(EN
+					? `<span style="color:#e06c75">command not found: ${cmd}. Type <em>help</em>.</span>`
+					: `<span style="color:#e06c75">comando não encontrado: ${cmd}. Digite <em>help</em>.</span>`);
 			}
 		});
 	})();
@@ -553,7 +585,13 @@
 		function fireKonami() {
 			const box = document.createElement('div');
 			box.id = 'konami-overlay';
-			box.innerHTML = `
+			box.innerHTML = EN ? `
+				<div class="konami-box">
+					<div class="konami-code">h6n_</div>
+					<p class="konami-msg">you found the easter egg 🥚</p>
+					<p class="konami-ascii">chef&nbsp;·&nbsp;lawyer&nbsp;·&nbsp;dev</p>
+					<button class="konami-close" id="konamiClose">[ close ]</button>
+				</div>` : `
 				<div class="konami-box">
 					<div class="konami-code">h6n_</div>
 					<p class="konami-msg">você encontrou o easter egg 🥚</p>
@@ -600,7 +638,10 @@
 		n = 1200 + Math.floor(Math.random() * 1600);
 	}
 	localStorage.setItem(KEY, n);
-	el.textContent = 'visitante #' + n.toLocaleString('pt-BR');
+	var en = (document.documentElement.lang || '').toLowerCase().indexOf('en') === 0;
+	el.textContent = en
+		? 'visitor #' + n.toLocaleString('en-US')
+		: 'visitante #' + n.toLocaleString('pt-BR');
 })();
 
 /* ════════════════════════════════════════

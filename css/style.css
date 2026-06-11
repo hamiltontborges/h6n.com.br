@@ -2033,8 +2033,33 @@ em {
 	border-color: var(--ink-faded);
 }
 
+.lang-toggle {
+	background: none;
+	border: 1px solid var(--border);
+	color: var(--ink-faded);
+	font-family: var(--font-mono);
+	font-size: .72rem;
+	letter-spacing: .1em;
+	padding: 4px 10px;
+	border-radius: 2px;
+	text-decoration: none;
+	transition: color .2s, border-color .2s, background .2s;
+	flex-shrink: 0;
+	margin-right: 10px;
+}
+
+.lang-toggle:hover {
+	color: var(--ink);
+	border-color: var(--ink-faded);
+}
+
 @media (max-width: 640px) {
 	.theme-toggle {
+		margin-right: 4px;
+		padding: 4px 8px;
+	}
+
+	.lang-toggle {
 		margin-right: 4px;
 		padding: 4px 8px;
 	}
